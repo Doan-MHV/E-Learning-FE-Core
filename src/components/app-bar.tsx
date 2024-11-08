@@ -188,6 +188,20 @@ function ResponsiveAppBar() {
                   {/* desktop-menu-items */}
                 </>
               )}
+
+            {!!user?.role &&
+              [RoleEnum.ADMIN].includes(Number(user?.role?.id)) && (
+                <>
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                    component={Link}
+                    href="/courses"
+                  >
+                    Courses
+                  </Button>
+                </>
+              )}
           </Box>
 
           <Box

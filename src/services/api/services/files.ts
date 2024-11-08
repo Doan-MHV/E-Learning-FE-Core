@@ -29,7 +29,7 @@ export function useFileUploadService() {
         }).then(wrapperFetchJsonResponse<FileUploadResponse>);
 
         if (result.status === HTTP_CODES_ENUM.CREATED) {
-          await fetch(result.data.uploadSignedUrl, {
+          await fetch(`result.data.uploadSignedUrl`, {
             method: "PUT",
             body: data,
             headers: {

@@ -57,10 +57,10 @@ const useValidationSchema = () => {
       .string()
       .min(6, t("sign-up:inputs.password.validation.min"))
       .required(t("sign-up:inputs.password.validation.required")),
-    policy: yup
-      .array()
-      .min(1, t("sign-up:inputs.policy.validation.required"))
-      .required(),
+    // policy: yup
+    //   .array()
+    //   .min(1, t("sign-up:inputs.policy.validation.required"))
+    //   .required(),
   });
 };
 
@@ -183,24 +183,24 @@ function Form() {
                 testId="password"
               />
             </Grid>
-            <Grid item xs={12}>
-              <FormCheckboxInput
-                name="policy"
-                label=""
-                testId="privacy"
-                options={policyOptions}
-                keyValue="id"
-                keyExtractor={(option) => option.id.toString()}
-                renderOption={(option) => (
-                  <span>
-                    {option.name}
-                    <MuiLink href="/privacy-policy" target="_blank">
-                      {t("sign-up:inputs.policy.label")}
-                    </MuiLink>
-                  </span>
-                )}
-              />
-            </Grid>
+            {/* <Grid item xs={12}> */}
+            {/*   <FormCheckboxInput */}
+            {/*     name="policy" */}
+            {/*     label="" */}
+            {/*     testId="privacy" */}
+            {/*     options={policyOptions} */}
+            {/*     keyValue="id" */}
+            {/*     keyExtractor={(option) => option.id.toString()} */}
+            {/*     renderOption={(option) => ( */}
+            {/*       <span> */}
+            {/*         {option.name} */}
+            {/*         <MuiLink href="/privacy-policy" target="_blank"> */}
+            {/*           {t("sign-up:inputs.policy.label")} */}
+            {/*         </MuiLink> */}
+            {/*       </span> */}
+            {/*     )} */}
+            {/*   /> */}
+            {/* </Grid> */}
 
             <Grid item xs={12}>
               <FormActions />
@@ -217,15 +217,15 @@ function Form() {
               </Box>
             </Grid>
 
-            {[isGoogleAuthEnabled, isFacebookAuthEnabled].some(Boolean) && (
-              <Grid item xs={12}>
-                <Divider sx={{ mb: 2 }}>
-                  <Chip label={t("sign-up:or")} />
-                </Divider>
-
-                <SocialAuth />
-              </Grid>
-            )}
+            {/* {[isGoogleAuthEnabled, isFacebookAuthEnabled].some(Boolean) && ( */}
+            {/*   <Grid item xs={12}> */}
+            {/*     <Divider sx={{ mb: 2 }}> */}
+            {/*       <Chip label={t("sign-up:or")} /> */}
+            {/*     </Divider> */}
+            {/**/}
+            {/*     <SocialAuth /> */}
+            {/*   </Grid> */}
+            {/* )} */}
           </Grid>
         </form>
       </Container>

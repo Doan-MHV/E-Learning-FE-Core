@@ -159,15 +159,15 @@ function Form() {
               )}
             </Grid>
 
-            {[isGoogleAuthEnabled, isFacebookAuthEnabled].some(Boolean) && (
-              <Grid item xs={12}>
-                <Divider sx={{ mb: 2 }}>
-                  <Chip label={t("sign-in:or")} />
-                </Divider>
-
-                <SocialAuth />
-              </Grid>
-            )}
+            {/* {[isGoogleAuthEnabled, isFacebookAuthEnabled].some(Boolean) && ( */}
+            {/*   <Grid item xs={12}> */}
+            {/*     <Divider sx={{ mb: 2 }}> */}
+            {/*       <Chip label={t("sign-in:or")} /> */}
+            {/*     </Divider> */}
+            {/**/}
+            {/*     <SocialAuth /> */}
+            {/*   </Grid> */}
+            {/* )} */}
           </Grid>
         </form>
       </Container>
