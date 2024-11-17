@@ -9,6 +9,7 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Link from "@/components/link";
 import { useTranslation } from "@/services/i18n/client";
+import { STORAGE_URL } from "@/services/api/config";
 
 const StyledAvatar = styled(Avatar)(({ theme }) => ({
   width: theme.spacing(20),
@@ -25,7 +26,7 @@ function Profile() {
           <StyledAvatar
             alt={user?.firstName + " " + user?.lastName}
             data-testid="user-icon"
-            src={user?.photo?.path}
+            src={`${STORAGE_URL}${user?.photo?.path}`}
           />
         </Grid>
         <Grid item>

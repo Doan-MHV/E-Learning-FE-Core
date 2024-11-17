@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import MarkdownEditor from "./page-content";
+import AssignmentDetails from "./page-content";
 import { getServerTranslation } from "@/services/i18n";
 
 type Props = {
@@ -10,8 +10,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { t } = await getServerTranslation(params.language, "password-change");
 
   return {
-    title: t("title"),
+    title: "Assignment Details",
   };
 }
 
-export default MarkdownEditor;
+export default AssignmentDetails;

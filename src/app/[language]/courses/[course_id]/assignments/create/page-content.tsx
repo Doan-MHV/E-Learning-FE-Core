@@ -2,7 +2,7 @@
 
 import FormDatePickerInput from "@/components/form/date-pickers/date-picker";
 import FormTextInput from "@/components/form/text-input/form-text-input";
-import { usePostLectureService } from "@/services/api/services/lecture";
+import { usePostAssignmentService } from "@/services/api/services/assignment";
 import { Course } from "@/services/api/types/course";
 import HTTP_CODES_ENUM from "@/services/api/types/http-codes";
 import withPageRequiredAuth from "@/services/auth/with-page-required-auth";
@@ -21,24 +21,22 @@ import {
 } from "react-hook-form";
 import * as yup from "yup";
 
-type CreateLectureFormData = {
-  lectureName: string;
-  lectureTime: string;
-  lectureDate: Date;
-  markdownContent: string;
+type CreateAssignmentFormData = {
+  name: string;
+  description?: string;
+  deadline: Date;
+  status?: string;
   course?: Course;
 };
 
 const useValidationSchema = () => {
   return yup.object().shape({
-    lectureName: yup.string().required("Lecture name is required"),
-    lectureTime: yup.string().required("Lecture time is required"),
-    lectureDate: yup.date().required("Lecture date is required"),
-    markdownContent: yup.string().required("Lecture content is required"),
+    name: yup.string().required("Assignment name is required"),
+    deadline: yup.date().required("Assignment deadline is required"),
   });
 };
 
-function CreateLectureFormActions() {
+function CreateAssignmentFormActions() {
   const { isSubmitting, isDirty } = useFormState();
   useLeavePage(isDirty);
 
@@ -54,11 +52,11 @@ function CreateLectureFormActions() {
   );
 }
 
-function FormCreateLecture() {
+function FormCreateAssignment() {
   const router = useRouter();
   const params = useParams();
   // const { user, isLoaded } = useAuth();
-  const fetchPostLecture = usePostLectureService();
+  const fetchPostAssignment = usePostAssignmentService();
   const validationSchema = useValidationSchema();
 
   const courseId = Array.isArray(params.course_id)
@@ -67,13 +65,13 @@ function FormCreateLecture() {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const methods = useForm<CreateLectureFormData>({
+  const methods = useForm<CreateAssignmentFormData>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      lectureName: "",
-      lectureTime: "",
-      lectureDate: new Date(),
-      markdownContent: "",
+      name: "",
+      description: "",
+      deadline: new Date(),
+      status: "",
       course: {
         id: courseId,
       },
@@ -83,17 +81,17 @@ function FormCreateLecture() {
   const { handleSubmit, control, setError } = methods;
 
   const onSubmit = handleSubmit(async (formData) => {
-    const { data, status } = await fetchPostLecture(formData);
+    const { data, status } = await fetchPostAssignment(formData);
 
     if (status === HTTP_CODES_ENUM.UNPROCESSABLE_ENTITY) {
-      (Object.keys(data.errors) as Array<keyof CreateLectureFormData>).forEach(
-        (key) => {
-          setError(key, {
-            type: "manual",
-            message: t(`External server error ${key}: ${data.errors[key]}`),
-          });
-        }
-      );
+      (
+        Object.keys(data.errors) as Array<keyof CreateAssignmentFormData>
+      ).forEach((key) => {
+        setError(key, {
+          type: "manual",
+          message: t(`External server error ${key}: ${data.errors[key]}`),
+        });
+      });
       return;
     }
 
@@ -101,7 +99,7 @@ function FormCreateLecture() {
       enqueueSnackbar("Create lecture successfully", {
         variant: "success",
       });
-      router.push(`/courses/${courseId}/lectures`);
+      router.push(`/courses/${courseId}/assignments`);
     }
   });
 
@@ -111,38 +109,39 @@ function FormCreateLecture() {
         <form onSubmit={onSubmit} autoComplete="create-new-lecture">
           <Grid container spacing={2} mb={3} mt={3}>
             <Grid item xs={12}>
-              <Typography variant="h6">Create Lecture</Typography>
+              <Typography variant="h6">Create Assignment</Typography>
             </Grid>
 
             <Grid item xs={12}>
-              <FormTextInput<CreateLectureFormData>
-                name="lectureName"
-                testId="new-lecture-name"
-                autoComplete="new-lecture-name"
-                label="Lecture name"
+              <FormTextInput<CreateAssignmentFormData>
+                name="name"
+                testId="new-assignment-name"
+                autoComplete="new-assignment-name"
+                label="Assignment Name"
               />
             </Grid>
 
             <Grid item xs={12}>
-              <FormTextInput<CreateLectureFormData>
-                name="lectureTime"
-                testId="new-lecture-time"
-                autoComplete="new-lecture-time"
-                label="Lecture time"
+              <FormDatePickerInput<CreateAssignmentFormData>
+                name="deadline"
+                testId="new-assignment-deadline"
+                label="Assignment Deadline"
               />
             </Grid>
 
             <Grid item xs={12}>
-              <FormDatePickerInput<CreateLectureFormData>
-                name="lectureDate"
-                testId="new-lecture-date"
-                label="Lecture date"
+              <FormTextInput<CreateAssignmentFormData>
+                name="status"
+                testId="new-assignment-status"
+                autoComplete="new-assignment-status"
+                label="Assignment Status"
               />
             </Grid>
 
             <Grid item xs={12}>
+              <Typography variant="body1">Assignment Description</Typography>
               <Controller
-                name="markdownContent"
+                name="description"
                 control={control}
                 render={({ field }) => (
                   <div data-color-mode="light">
@@ -153,13 +152,13 @@ function FormCreateLecture() {
             </Grid>
 
             <Grid item xs={12}>
-              <CreateLectureFormActions />
+              <CreateAssignmentFormActions />
               <Box ml={1} component="span">
                 <Button
                   variant="contained"
                   color="inherit"
                   LinkComponent={Link}
-                  href={`/courses/${courseId}/lectures`}
+                  href={`/courses/${courseId}/assignments`}
                 >
                   Cancel
                 </Button>
@@ -172,8 +171,8 @@ function FormCreateLecture() {
   );
 }
 
-function CreateLecture() {
-  return <FormCreateLecture />;
+function CreateAssignment() {
+  return <FormCreateAssignment />;
 }
 
-export default withPageRequiredAuth(CreateLecture);
+export default withPageRequiredAuth(CreateAssignment);

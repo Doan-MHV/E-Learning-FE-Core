@@ -17,7 +17,7 @@ import {
 import { useTranslation } from "react-i18next";
 import IconButton from "@mui/material/IconButton";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-import { API_URL } from "@/services/api/config";
+import { API_URL, STORAGE_URL } from "@/services/api/config";
 
 type AvatarInputProps = {
   error?: string;
@@ -86,8 +86,6 @@ function AvatarInput(props: AvatarInputProps) {
       setIsLoading(true);
       const { status, data } = await fetchFileUpload(acceptedFiles[0]);
       if (status === HTTP_CODES_ENUM.CREATED) {
-        console.log("form avatarInput");
-        console.log(data);
         onChange(data.file);
       }
       setIsLoading(false);
@@ -141,7 +139,7 @@ function AvatarInput(props: AvatarInputProps) {
       )}
       {props?.value ? (
         <StyledWrapperAvatar>
-          <StyledAvatar src={props.value?.path} />
+          <StyledAvatar src={`${STORAGE_URL}${props.value?.path}`} />
           <StyledOverlay>
             <IconButton
               disableRipple

@@ -21,6 +21,7 @@ import { RoleEnum } from "@/services/api/types/role";
 import Divider from "@mui/material/Divider";
 import ThemeSwitchButton from "@/components/switch-theme-button";
 import { IS_SIGN_UP_ENABLED } from "@/services/auth/config";
+import { STORAGE_URL } from "@/services/api/config";
 
 function ResponsiveAppBar() {
   const { t } = useTranslation("common");
@@ -226,7 +227,7 @@ function ResponsiveAppBar() {
                   >
                     <Avatar
                       alt={user?.firstName + " " + user?.lastName}
-                      src={user.photo?.path}
+                      src={`${STORAGE_URL}${user.photo?.path}`}
                     />
                   </IconButton>
                 </Tooltip>

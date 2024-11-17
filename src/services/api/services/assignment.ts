@@ -1,30 +1,30 @@
 import { useCallback } from "react";
 import { Course } from "../types/course";
 import { InfinityPaginationType } from "../types/infinity-pagination";
-import { Lecture } from "../types/lecture";
+import { Assignment } from "../types/assignment";
 import { SortEnum } from "../types/sort-type";
 import { RequestConfigType } from "./types/request-config";
 import { API_URL } from "../config";
 import wrapperFetchJsonResponse from "../wrapper-fetch-json-response";
 import useFetch from "../use-fetch";
 
-export type LecturesRequest = {
+export type AssignmentsRequest = {
   page: number;
   limit: number;
   filters?: {
     courses?: Course[];
   };
-  sort?: Array<{ orderBy: keyof Lecture; order: SortEnum }>;
+  sort?: Array<{ orderBy: keyof Assignment; order: SortEnum }>;
 };
 
-export type LecturesResponse = InfinityPaginationType<Lecture>;
+export type AssignmentsResponse = InfinityPaginationType<Assignment>;
 
-export function useGetLecturesService() {
+export function useGetAssginemntsService() {
   const fetch = useFetch();
 
   return useCallback(
-    (data: LecturesRequest, requestConfig?: RequestConfigType) => {
-      const requestUrl = new URL(`${API_URL}/v1/lectures`);
+    (data: AssignmentsRequest, requestConfig?: RequestConfigType) => {
+      const requestUrl = new URL(`${API_URL}/v1/assignments`);
       requestUrl.searchParams.append("page", data.page.toString());
       requestUrl.searchParams.append("limit", data.limit.toString());
       if (data.filters) {
@@ -37,49 +37,49 @@ export function useGetLecturesService() {
       return fetch(requestUrl, {
         method: "GET",
         ...requestConfig,
-      }).then(wrapperFetchJsonResponse<LecturesResponse>);
+      }).then(wrapperFetchJsonResponse<AssignmentsResponse>);
     },
     [fetch]
   );
 }
 
-export type LectureRequest = {
-  id: Lecture["id"];
+export type AssignmentRequest = {
+  id: Assignment["id"];
 };
 
-export type LectureResponse = Lecture;
+export type AssignmentResponse = Assignment;
 
-export function useGetLectureService() {
+export function useGetAssignmentService() {
   const fetch = useFetch();
 
   return useCallback(
-    (data: LectureRequest, requestConfig?: RequestConfigType) => {
-      return fetch(`${API_URL}/v1/lectures/${data.id}`, {
+    (data: AssignmentRequest, requestConfig?: RequestConfigType) => {
+      return fetch(`${API_URL}/v1/assignments/${data.id}`, {
         method: "GET",
         ...requestConfig,
-      }).then(wrapperFetchJsonResponse<LectureResponse>);
+      }).then(wrapperFetchJsonResponse<AssignmentResponse>);
     },
     [fetch]
   );
 }
 
-export type LecturePostRequest = Pick<
-  Lecture,
-  "lectureName" | "lectureTime" | "lectureDate" | "markdownContent" | "course"
+export type AssignmentPostRequest = Pick<
+  Assignment,
+  "name" | "description" | "deadline" | "status" | "course"
 >;
 
-export type LecturePostResponse = Lecture;
+export type AssignmentPostResponse = Assignment;
 
-export function usePostLectureService() {
+export function usePostAssignmentService() {
   const fetch = useFetch();
 
   return useCallback(
-    (data: LecturePostRequest, requestConfig?: RequestConfigType) => {
-      return fetch(`${API_URL}/v1/lectures`, {
+    (data: AssignmentPostRequest, requestConfig?: RequestConfigType) => {
+      return fetch(`${API_URL}/v1/assignments`, {
         method: "POST",
         body: JSON.stringify(data),
         ...requestConfig,
-      }).then(wrapperFetchJsonResponse<LecturePostResponse>);
+      }).then(wrapperFetchJsonResponse<AssignmentPostResponse>);
     },
     [fetch]
   );
